@@ -19,30 +19,10 @@ export const Content = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 30px;
-
-    input {
-      background: #fff;
-      border: 1px solid #eee;
-      border-radius: 4px;
-      height: 44px;
-      padding: 0 15px;
-      margin: 0 0 10px;
-      color: #666;
-
-      &::placeholder {
-        color: #999;
-      }
-    }
-
-    span {
-      color: #fb6f91;
-      align-self: flex-start;
-      margin: 0 0 10px;
-      font-weight: bold;
-    }
+    padding: 20px;
 
     button {
-      margin: 10px 30px 50px;
+      margin: 10px 0px 30px;
       height: 44px;
       background: #7d40e7;
       font-weight: bold;

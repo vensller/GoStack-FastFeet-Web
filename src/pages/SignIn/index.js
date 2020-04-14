@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 
-import { Container, InputGroup } from './styles';
+import { Container } from './styles';
+import { InputRow, InputGroup } from '~/global/styles';
 
 import { signInRequest } from '~/store/modules/auth/actions';
 
@@ -28,19 +29,23 @@ export default function SignIn() {
     <Container>
       <img src={logo} alt="fastfeet" />
       <Form schema={schema} onSubmit={handleSubmit}>
-        <InputGroup>
-          <strong>SEU E-MAIL</strong>
-          <Input
-            id="signin"
-            name="email"
-            type="email"
-            placeholder="exemplo@email.com"
-          />
-        </InputGroup>
-        <InputGroup>
-          <strong>SUA SENHA</strong>
-          <Input name="password" type="password" placeholder="*********" />
-        </InputGroup>
+        <InputRow>
+          <InputGroup>
+            <strong>SEU E-MAIL</strong>
+            <Input
+              id="signin"
+              name="email"
+              type="email"
+              placeholder="exemplo@email.com"
+            />
+          </InputGroup>
+        </InputRow>
+        <InputRow>
+          <InputGroup>
+            <strong>SUA SENHA</strong>
+            <Input name="password" type="password" placeholder="*********" />
+          </InputGroup>
+        </InputRow>
 
         <button type="submit">
           {loading ? 'Carregando...' : 'Entrar no sistema'}
