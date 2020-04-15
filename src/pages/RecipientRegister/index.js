@@ -5,8 +5,13 @@ import * as Yup from 'yup';
 
 import { MdKeyboardArrowLeft, MdCheck } from 'react-icons/md';
 
-import { Container, Header, InputContainer, StyledButton } from './styles';
-import { InputGroup, InputRow } from '~/global/styles';
+import { Container, Header } from './styles';
+import {
+  InputGroup,
+  InputRow,
+  InputContainer,
+  StyledButton,
+} from '~/global/styles';
 
 import api from '~/services/api';
 import history from '~/services/history';
@@ -43,7 +48,7 @@ export default function RecipientRegister() {
       });
 
       toast.success('Destinatário salvo com sucesso!');
-      history.push('/recipients/list');
+      history.push('/recipients');
     } catch (error) {
       const { response } = error;
 
@@ -62,7 +67,10 @@ export default function RecipientRegister() {
         <Header>
           <strong>Cadastro de destinatário</strong>
           <aside>
-            <StyledButton type="button">
+            <StyledButton
+              type="button"
+              onClick={() => history.push('/recipients')}
+            >
               <MdKeyboardArrowLeft color="#fff" size={24} />
               VOLTAR
             </StyledButton>

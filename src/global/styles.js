@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
+import { darken } from 'polished';
 
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-perfect-scrollbar/dist/css/styles.css';
@@ -96,4 +97,31 @@ export const InputGroup = styled.div`
       color: #999;
     }
   }
+`;
+
+export const StyledButton = styled.button`
+  margin-left: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: ${props => (props.colored ? '#7D40E7' : '#CCCCCC')};
+  border-radius: 4px;
+  color: #fff;
+  padding: 3px 15px;
+  border: 0;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background 0.2s;
+
+  &:hover {
+    background: ${props => darken(0.1, props.colored ? '#7D40E7' : '#CCCCCC')};
+  }
+`;
+
+export const InputContainer = styled.div`
+  box-sizing: border-box;
+  background: #fff;
+  margin-top: 15px;
+  border-radius: 5px;
+  padding: 25px;
 `;
