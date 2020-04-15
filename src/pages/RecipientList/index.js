@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { MdAdd, MdSearch, MdMoreHoriz } from 'react-icons/md';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import { toast } from 'react-toastify';
+import { MdAdd, MdSearch, MdMoreHoriz, MdEdit, MdDelete } from 'react-icons/md';
 
-import { Container, StyledTable } from './styles';
+import {
+  Container,
+  Header,
+  StyledTable,
+  DropDownContainer,
+  Badge,
+  DropDownButtons,
+} from './styles';
 import { StyledButton } from '~/global/styles';
 import Pagination from '~/components/Pagination';
+import ConfirmationDialog from '~/components/ConfirmationDialog';
 
 import history from '~/services/history';
 import api from '~/services/api';
@@ -23,7 +33,12 @@ export default function RecipientList() {
           count: 10,
         },
       });
-      setRecipients(data);
+      setRecipients(
+        data.map(recipient => ({
+          ...recipient,
+          selected: false,
+        }))
+      );
     }
 
     loadRecipientes();
@@ -33,10 +48,58 @@ export default function RecipientList() {
     if (e.keyCode === 13) setSearchName(name);
   }
 
+  function handleSelectDropdown(recipient) {
+    setRecipients(
+      recipients.map(item => {
+        if (item === recipient) {
+          item.selected = !item.selected;
+        }
+
+        return item;
+      })
+    );
+  }
+
+  async function handleEdit(recipient) {}
+
+  async function deleteRecipient(recipient, onClose) {
+    try {
+      await api.delete(`/recipients/${recipient.id}`);
+
+      setRecipients(recipients.filter(item => item.id !== recipient.id));
+
+      toast.success('Destinatário foi removido com sucesso!');
+    } catch (error) {
+      const { response } = error;
+
+      if (response && response.data && response.data.error) {
+        toast.error(response.data.error);
+      } else
+        toast.error(
+          'Não foi possível remover o destinatário, tente novamente mais tarde'
+        );
+    }
+
+    onClose();
+  }
+
+  async function handleDelete(recipient) {
+    confirmAlert({
+      customUI: props => (
+        <ConfirmationDialog
+          {...props}
+          text={`Você tem certeza que deseja remover o destinatário
+      ${recipient.name.trim()}?`}
+          onClickYes={onClose => deleteRecipient(recipient, onClose)}
+        />
+      ),
+    });
+  }
+
   return (
     <Container>
       <h2>Gerenciando destinatários</h2>
-      <div>
+      <Header>
         <div>
           <MdSearch color="#999" size={24} />
           <input
@@ -54,7 +117,7 @@ export default function RecipientList() {
           <MdAdd color="#fff" size={24} />
           Cadastrar
         </StyledButton>
-      </div>
+      </Header>
 
       <StyledTable>
         <thead>
@@ -73,7 +136,15 @@ export default function RecipientList() {
               <td>{item.name}</td>
               <td>{item.address.full_address}</td>
               <td>
-                <MdMoreHoriz color="#666" size={24} />
+                <DropDownContainer>
+                  <Badge onClick={() => handleSelectDropdown(item)}>
+                    <MdMoreHoriz color="#666" size={24} />
+                  </Badge>
+                  <DropDownButtons visible={item.selected}>
+                    <MdEdit size={24} onClick={() => handleEdit(item)} />
+                    <MdDelete size={24} onClick={() => handleDelete(item)} />
+                  </DropDownButtons>
+                </DropDownContainer>
               </td>
             </tr>
           ))}

@@ -1,54 +1,55 @@
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 export const Container = styled.div`
   max-width: 80%;
   margin: 20px auto;
   display: flex;
   flex-direction: column;
+`;
+
+export const Header = styled.div`
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
 
   div {
-    margin-top: 10px;
-    width: 100%;
+    width: 350px;
     display: flex;
     flex-direction: row;
+    background: #fff;
+    border-radius: 4px;
+    align-content: center;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
 
-    div {
-      width: 350px;
-      display: flex;
-      flex-direction: row;
-      background: #fff;
-      border-radius: 4px;
-      align-content: center;
-      align-items: center;
-
-      svg {
-        margin-left: 5px;
-      }
-
-      input {
-        border: 0;
-        height: 32px;
-        width: 300px;
-        background: none;
-        padding: 0 5px;
-        color: #666;
-        max-width: 90%;
-
-        &::placeholder {
-          color: #999;
-        }
-      }
+    svg {
+      margin-left: 5px;
     }
 
-    button {
-      margin-top: 10px;
+    input {
+      border: 0;
+      height: 32px;
+      width: 300px;
+      background: none;
+      padding: 0 5px;
+      color: #666;
+      max-width: 90%;
 
-      @media (max-width: 680px) {
-        margin-left: 0px;
+      &::placeholder {
+        color: #999;
       }
+    }
+  }
+
+  button {
+    margin-top: 10px;
+
+    @media (max-width: 680px) {
+      margin-left: 0px;
     }
   }
 `;
@@ -84,6 +85,7 @@ export const StyledTable = styled.table`
       margin: 10px 0;
       border: 0;
       height: 50px;
+      color: #666;
 
       & td:first-child {
         border-top-left-radius: 4px;
@@ -97,6 +99,55 @@ export const StyledTable = styled.table`
       & td:last-child {
         border-bottom-right-radius: 4px;
       }
+
+      td {
+        svg {
+          cursor: pointer;
+        }
+      }
     }
+  }
+`;
+
+export const DropDownContainer = styled.div`
+  position: relative;
+`;
+
+export const Badge = styled.button`
+  background: none;
+  border: 0;
+  position: relative;
+`;
+
+export const DropDownButtons = styled.div`
+  position: absolute;
+  width: 80px;
+  left: calc(50% - 40px);
+  top: calc(100%);
+  background: rgba(125, 64, 231, 0.8);
+  border-radius: 4px;
+  padding: 15px 5px;
+  display: ${props => (props.visible ? 'flex' : 'none')};
+  flex-direction: row;
+  justify-content: space-between;
+
+  svg {
+    color: #fff;
+
+    &:hover {
+      color: ${darken(0.2, '#fff')};
+    }
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: calc(50% - 10px);
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid rgba(125, 64, 231, 0.8);
   }
 `;
