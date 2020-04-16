@@ -28,12 +28,9 @@ const schema = Yup.object().shape({
 export default function DeliverymanRegister({ location }) {
   const { state: routeState } = location;
   const { deliveryman } = routeState || {};
+  const [avatar_id, setAvatar] = useState();
 
-  const [namePreview, setNamePreview] = useState(
-    deliveryman ? deliveryman.name : ''
-  );
-
-  async function handleSubmit({ name, email, avatar_id }) {
+  async function handleSubmit({ name, email }) {
     try {
       const data = {
         name,
@@ -79,7 +76,10 @@ export default function DeliverymanRegister({ location }) {
           </aside>
         </Header>
         <InputContainer>
-          <AvatarInput name={namePreview} />
+          <AvatarInput
+            onChange={id => setAvatar(id)}
+            defaultValue={deliveryman ? deliveryman.avatar : undefined}
+          />
           <InputRow>
             <InputGroup>
               <strong>Nome</strong>
@@ -87,7 +87,6 @@ export default function DeliverymanRegister({ location }) {
                 name="name"
                 type="text"
                 placeholder="Digite seu nome completo"
-                onChange={e => setNamePreview(e.target.value)}
               />
             </InputGroup>
           </InputRow>

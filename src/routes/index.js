@@ -21,14 +21,15 @@ export default function Routes() {
 
       <Route
         path="/recipients/register"
+        exact
         component={RecipientRegister}
         isPrivate
       />
-      <Route path="/recipients" component={RecipientList} isPrivate />
+      <Route path="/recipients" exact component={RecipientList} isPrivate />
 
-      <Route path="/deliveries" component={DeliveryList} isPrivate />
+      <Route path="/deliveries" exact component={DeliveryList} isPrivate />
 
-      <Route path="/couriers" component={DeliverymanList} isPrivate />
+      <Route path="/couriers" exact component={DeliverymanList} isPrivate />
       <Route
         path="/couriers/register"
         component={DeliverymanRegister}

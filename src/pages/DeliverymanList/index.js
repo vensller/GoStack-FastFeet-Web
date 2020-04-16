@@ -143,6 +143,7 @@ export default function DeliverymanList() {
                   name={item.name}
                   src={item.avatar ? item.avatar.url : ''}
                   textSizeRatio={1}
+                  maxInitials={2}
                   size={40}
                   round="50%"
                 />

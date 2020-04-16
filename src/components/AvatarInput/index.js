@@ -1,29 +1,16 @@
-import React, { useState, useRef, useEffect } from 'react';
-import Avatar from 'react-avatar';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useField } from '@rocketseat/unform';
+import api from '~/services/api';
+
+import AvatarPreview from '~/assets/courier_avatar.jpg';
 
 import { Container } from './styles';
 
-import api from '~/services/api';
-
-export default function AvatarInput({ name }) {
-  const { defaultValue, registerField } = useField('avatar');
-
+export default function AvatarInput({ defaultValue, onChange }) {
   const [file, setFile] = useState(defaultValue && defaultValue.id);
   const [preview, setPreview] = useState(defaultValue && defaultValue.url);
 
   const ref = useRef();
-
-  useEffect(() => {
-    if (ref.current) {
-      registerField({
-        name: 'avatar_id',
-        ref: ref.current,
-        path: 'dataset.file',
-      });
-    }
-  }, [ref, registerField]);
 
   async function handleChange(e) {
     const data = new FormData();
@@ -36,18 +23,13 @@ export default function AvatarInput({ name }) {
 
     setFile(id);
     setPreview(url);
+    onChange(id);
   }
 
   return (
     <Container>
       <label htmlFor="avatar">
-        <Avatar
-          src={preview}
-          alt="avatar_input"
-          size={120}
-          round="50%"
-          name={name}
-        />
+        <img src={preview || AvatarPreview} alt="" />
 
         <input
           type="file"
@@ -63,9 +45,10 @@ export default function AvatarInput({ name }) {
 }
 
 AvatarInput.propTypes = {
-  name: PropTypes.string,
+  defaultValue: PropTypes.oneOfType([PropTypes.object]),
+  onChange: PropTypes.func.isRequired,
 };
 
 AvatarInput.defaultProps = {
-  name: '',
+  defaultValue: undefined,
 };
