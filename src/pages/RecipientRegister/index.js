@@ -2,10 +2,11 @@ import React from 'react';
 import { Form, Input } from '@rocketseat/unform';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
+import PropTypes from 'prop-types';
 
 import { MdKeyboardArrowLeft, MdCheck } from 'react-icons/md';
 
-import { Container, Header } from './styles';
+import { Container, Header } from '~/global/RegisterPages/styles';
 import {
   InputGroup,
   InputRow,
@@ -26,7 +27,22 @@ const schema = Yup.object().shape({
   zip_code: Yup.string().required('O CEP é obrigatório'),
 });
 
-export default function RecipientRegister() {
+export default function RecipientRegister({ location }) {
+  const { state: routeState } = location;
+  const { recipient } = routeState || {};
+
+  const initialData = {
+    name: recipient ? recipient.name : '',
+    street: recipient && recipient.address ? recipient.address.street : '',
+    house_number:
+      recipient && recipient.address ? recipient.address.house_number : '',
+    city: recipient && recipient.address ? recipient.address.city : '',
+    state: recipient && recipient.address ? recipient.address.state : '',
+    zip_code: recipient && recipient.address ? recipient.address.zip_code : '',
+    complement:
+      recipient && recipient.address ? recipient.address.complement : '',
+  };
+
   async function handleSubmit({
     name,
     street,
@@ -37,7 +53,7 @@ export default function RecipientRegister() {
     zip_code,
   }) {
     try {
-      await api.post('/recipients', {
+      const data = {
         name,
         street,
         house_number,
@@ -45,7 +61,14 @@ export default function RecipientRegister() {
         city,
         state,
         zip_code,
-      });
+      };
+
+      if (recipient) {
+        await api.put(`/recipients/${recipient.id}`, {
+          ...data,
+          address_id: recipient.address.id,
+        });
+      } else await api.post('/recipients', data);
 
       toast.success('Destinatário salvo com sucesso!');
       history.push('/recipients');
@@ -63,9 +86,9 @@ export default function RecipientRegister() {
 
   return (
     <Container>
-      <Form onSubmit={handleSubmit} schema={schema}>
+      <Form onSubmit={handleSubmit} schema={schema} initialData={initialData}>
         <Header>
-          <strong>Cadastro de destinatário</strong>
+          <strong>{recipient ? 'Edição ' : 'Cadastro '}de destinatário</strong>
           <aside>
             <StyledButton
               type="button"
@@ -126,3 +149,13 @@ export default function RecipientRegister() {
     </Container>
   );
 }
+
+RecipientRegister.propTypes = {
+  location: PropTypes.oneOfType([PropTypes.object]),
+};
+
+RecipientRegister.defaultProps = {
+  location: {
+    state: {},
+  },
+};

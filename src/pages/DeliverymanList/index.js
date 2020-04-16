@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Avatar from 'react-avatar';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import { toast } from 'react-toastify';
 import { MdAdd, MdSearch, MdMoreHoriz, MdEdit, MdDelete } from 'react-icons/md';
@@ -19,40 +20,40 @@ import ConfirmationDialog from '~/components/ConfirmationDialog';
 import history from '~/services/history';
 import api from '~/services/api';
 
-export default function RecipientList() {
+export default function DeliverymanList() {
   const [page, setPage] = useState(1);
   const [searchName, setSearchName] = useState('');
   const [name, setName] = useState('');
-  const [recipients, setRecipients] = useState([]);
+  const [couriers, setCouriers] = useState([]);
 
   useEffect(() => {
-    async function loadRecipientes() {
-      const { data } = await api.get('/recipients', {
+    async function loadCouriers() {
+      const { data } = await api.get('/couriers', {
         params: {
           name: searchName,
           page,
           count: 10,
         },
       });
-      setRecipients(
-        data.map(recipient => ({
-          ...recipient,
+      setCouriers(
+        data.map(deliveryman => ({
+          ...deliveryman,
           selected: false,
         }))
       );
     }
 
-    loadRecipientes();
+    loadCouriers();
   }, [page, searchName]);
 
   function handleKeyUp(e) {
     if (e.keyCode === 13) setSearchName(name);
   }
 
-  function handleSelectDropdown(recipient) {
-    setRecipients(
-      recipients.map(item => {
-        if (item === recipient) {
+  function handleSelectDropdown(deliveryman) {
+    setCouriers(
+      couriers.map(item => {
+        if (item === deliveryman) {
           item.selected = !item.selected;
         }
 
@@ -61,17 +62,17 @@ export default function RecipientList() {
     );
   }
 
-  async function handleEdit(recipient) {
-    history.push('/recipients/register', { recipient });
+  async function handleEdit(deliveryman) {
+    history.push('/couriers/register', { deliveryman });
   }
 
-  async function deleteRecipient(recipient, onClose) {
+  async function deleteDeliveryman(deliveryman, onClose) {
     try {
-      await api.delete(`/recipients/${recipient.id}`);
+      await api.delete(`/couriers/${deliveryman.id}`);
 
-      setRecipients(recipients.filter(item => item.id !== recipient.id));
+      setCouriers(couriers.filter(item => item.id !== deliveryman.id));
 
-      toast.success('Destinatário foi removido com sucesso!');
+      toast.success('Entregador foi removido com sucesso!');
     } catch (error) {
       const { response } = error;
 
@@ -79,21 +80,21 @@ export default function RecipientList() {
         toast.error(response.data.error);
       } else
         toast.error(
-          'Não foi possível remover o destinatário, tente novamente mais tarde'
+          'Não foi possível remover o entregador, tente novamente mais tarde'
         );
     }
 
     onClose();
   }
 
-  async function handleDelete(recipient) {
+  async function handleDelete(deliveryman) {
     confirmAlert({
       customUI: props => (
         <ConfirmationDialog
           {...props}
-          text={`Você tem certeza que deseja remover o destinatário
-      ${recipient.name.trim()}?`}
-          onClickYes={onClose => deleteRecipient(recipient, onClose)}
+          text={`Você tem certeza que deseja remover o entregador
+      ${deliveryman.name.trim()}?`}
+          onClickYes={onClose => deleteDeliveryman(deliveryman, onClose)}
         />
       ),
     });
@@ -101,13 +102,13 @@ export default function RecipientList() {
 
   return (
     <Container>
-      <h2>Gerenciando destinatários</h2>
+      <h2>Gerenciando entregadores</h2>
       <Header>
         <div>
           <MdSearch color="#999" size={24} />
           <input
             type="text"
-            placeholder="Busca por destinatários"
+            placeholder="Busca por entregador"
             value={name}
             onChange={e => setName(e.target.value)}
             onKeyUp={handleKeyUp}
@@ -115,7 +116,7 @@ export default function RecipientList() {
         </div>
         <StyledButton
           colored
-          onClick={() => history.push('/recipients/register')}
+          onClick={() => history.push('/couriers/register')}
         >
           <MdAdd color="#fff" size={24} />
           Cadastrar
@@ -126,18 +127,28 @@ export default function RecipientList() {
         <thead>
           <tr>
             <th>ID</th>
+            <th>Foto</th>
             <th>Nome</th>
-            <th>Endereço</th>
+            <th>Email</th>
             <th>Ações</th>
           </tr>
         </thead>
 
         <tbody>
-          {recipients.map(item => (
+          {couriers.map(item => (
             <tr key={item.id}>
-              <StyledCell width="10%">{`#${item.id}`}</StyledCell>
+              <StyledCell width="15%">{`#${item.id}`}</StyledCell>
+              <StyledCell width="15%">
+                <Avatar
+                  name={item.name}
+                  src={item.avatar ? item.avatar.url : ''}
+                  textSizeRatio={1}
+                  size={40}
+                  round="50%"
+                />
+              </StyledCell>
               <StyledCell width="30%">{item.name}</StyledCell>
-              <StyledCell width="50%">{item.address.full_address}</StyledCell>
+              <StyledCell width="40%">{item.email}</StyledCell>
               <StyledCell width="10%">
                 <DropDownContainer>
                   <Badge onClick={() => handleSelectDropdown(item)}>

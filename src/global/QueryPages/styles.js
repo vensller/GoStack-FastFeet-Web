@@ -2,7 +2,12 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 export const Container = styled.div`
-  max-width: 80%;
+  @media (min-width: 680px) {
+    max-width: 80%;
+  }
+  @media (max-width: 680px) {
+    padding: 10px;
+  }
   margin: 20px auto;
   display: flex;
   flex-direction: column;
@@ -60,21 +65,19 @@ export const StyledTable = styled.table`
   border-collapse: separate;
   width: 100%;
   border-spacing: 0 0.8em;
+  max-width: 100%;
 
   th,
   td {
     text-align: left;
+    padding: 0 10px;
 
     &:last-child {
-      width: 50px;
-      max-width: 20%;
       text-align: center;
     }
 
     &:first-child {
-      width: 50px;
       text-align: left;
-      padding-left: 10px;
     }
   }
 
@@ -107,6 +110,17 @@ export const StyledTable = styled.table`
       }
     }
   }
+`;
+
+export const StyledCell = styled.td`
+  width: ${props => (props.width ? props.width : '')};
+  max-width: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  &:last-child {
+    overflow: visible;
+  }
+  text-overflow: ellipsis;
 `;
 
 export const DropDownContainer = styled.div`

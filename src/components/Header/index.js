@@ -18,7 +18,7 @@ export default function Header() {
           <StyledLink history={history.location.pathname} to="/deliveries">
             ENCOMENDAS
           </StyledLink>
-          <StyledLink history={history.location.pathname} to="/deliveryman">
+          <StyledLink history={history.location.pathname} to="/couriers">
             ENTREGADORES
           </StyledLink>
           <StyledLink history={history.location.pathname} to="/recipients">
