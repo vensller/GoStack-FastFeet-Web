@@ -9,6 +9,7 @@ import SignIn from '~/pages/SignIn';
 import RecipientList from '~/pages/RecipientList';
 import DeliveryList from '~/pages/DeliveryList';
 import DeliverymanList from '~/pages/DeliverymanList';
+import ProblemList from '~/pages/ProblemList';
 
 // Register pages
 import RecipientRegister from '~/pages/RecipientRegister';
@@ -42,6 +43,8 @@ export default function Routes() {
         component={DeliverymanRegister}
         isPrivate
       />
+
+      <Route path="/problems" exact component={ProblemList} isPrivate />
     </Switch>
   );
 }

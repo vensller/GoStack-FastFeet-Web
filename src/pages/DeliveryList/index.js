@@ -25,6 +25,7 @@ import { StyledButton } from '~/global/styles';
 import { StyledStatus } from './styles';
 import Pagination from '~/components/Pagination';
 import ConfirmationDialog from '~/components/ConfirmationDialog';
+import DeliveryDetails from './DeliveryDetails';
 
 import history from '~/services/history';
 import api from '~/services/api';
@@ -34,6 +35,8 @@ export default function DeliveryList() {
   const [searchProduct, setSearchProduct] = useState('');
   const [product, setProduct] = useState('');
   const [deliveries, setDeliveries] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [showDelivery, setShowDelivery] = useState(undefined);
 
   useEffect(() => {
     async function loadDeliveries() {
@@ -117,10 +120,27 @@ export default function DeliveryList() {
     });
   }
 
-  function handleShow(delivery) {}
+  function handleShow(delivery) {
+    setDeliveries(
+      deliveries.map(item => {
+        if (item === delivery) {
+          item.selected = false;
+        }
+
+        return item;
+      })
+    );
+    setShowDelivery(delivery);
+    setModalVisible(true);
+  }
 
   return (
     <Container>
+      <DeliveryDetails
+        visible={modalVisible}
+        toggle={() => setModalVisible(false) && setShowDelivery(undefined)}
+        delivery={showDelivery}
+      />
       <h2>Gerenciando encomendas</h2>
       <Header>
         <div>
@@ -180,7 +200,10 @@ export default function DeliveryList() {
                 {item.recipient.address.state}
               </StyledCell>
               <StyledCell width="10%">
-                <StyledStatus status={item.status} />
+                <StyledStatus status={item.status}>
+                  <div />
+                  <span>{item.status.description}</span>
+                </StyledStatus>
               </StyledCell>
               <StyledCell width="10%">
                 <DropDownContainer>
