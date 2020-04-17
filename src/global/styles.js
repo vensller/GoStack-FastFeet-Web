@@ -98,6 +98,28 @@ export const InputGroup = styled.div`
       color: #999;
     }
   }
+
+  select {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    height: 44px;
+    padding: 0 15px;
+    margin: 0 0 10px;
+    color: #666;
+    max-width: 100%;
+    font-size: 14px;
+
+    &::placeholder {
+      color: #999;
+    }
+
+    option {
+      border: 1px solid #eee;
+      border-radius: 4px;
+      color: #666;
+    }
+  }
 `;
 
 export const StyledButton = styled.button`

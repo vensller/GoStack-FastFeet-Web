@@ -121,6 +121,18 @@ export const StyledCell = styled.td`
     overflow: visible;
   }
   text-overflow: ellipsis;
+
+  span {
+    margin-left: 10px;
+  }
+`;
+
+export const StyledHeader = styled.th`
+  width: ${props => (props.width ? props.width : '')};
+  max-width: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const DropDownContainer = styled.div`

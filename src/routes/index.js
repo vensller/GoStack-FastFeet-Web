@@ -13,21 +13,28 @@ import DeliverymanList from '~/pages/DeliverymanList';
 // Register pages
 import RecipientRegister from '~/pages/RecipientRegister';
 import DeliverymanRegister from '~/pages/DeliverymanRegister';
+import DeliveryRegister from '~/pages/DeliveryRegister';
 
 export default function Routes() {
   return (
     <Switch>
       <Route path="/" exact component={SignIn} />
 
+      <Route path="/recipients" exact component={RecipientList} isPrivate />
       <Route
         path="/recipients/register"
         exact
         component={RecipientRegister}
         isPrivate
       />
-      <Route path="/recipients" exact component={RecipientList} isPrivate />
 
       <Route path="/deliveries" exact component={DeliveryList} isPrivate />
+      <Route
+        path="/deliveries/register"
+        exact
+        component={DeliveryRegister}
+        isPrivate
+      />
 
       <Route path="/couriers" exact component={DeliverymanList} isPrivate />
       <Route
